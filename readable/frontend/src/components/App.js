@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
+import { PageHeader } from 'react-bootstrap'
 import { withRouter } from 'react-router'
 import { Link, Switch } from 'react-router-dom'
 import { uuid } from 'uuid'
@@ -132,9 +133,13 @@ class App extends Component {
 
     return (
       <div>
-        <Route exact path='/posts/new' render={() => (
+      <PageHeader>Readable <small>test app</small></PageHeader>
+        <Route exact path='/posts/new' render={({history}) => (
           <PostForm
-            postdispatch={this.submitPost}
+            postdispatch={(post) => {
+              this.submitPost(post)
+              history.push('/')
+            }}
             categories={postsState.categories}
           />
         )} />
@@ -163,18 +168,23 @@ class App extends Component {
           />
         )} />
 
-        <Route exact path='/edit/post/:id' render={() => (
+        <Route exact path='/edit/post/:id' render={({ history }) => (
           <EditPost
-            postdispatch={this.SubmitUpdatePost}
+            postdispatch={(post) => {
+              this.SubmitUpdatePost(post)
+              history.push('/')
+            }}
             categories={postsState.categories}
             post={this.props.post}
           />
         )} />
-        <Route exact path='/comment/:id' render={() => (
-          <EditComment />
+        <Route exact path='/comment/:id' render={({ history }) => (
+          <EditComment
+            backPage={history}
+           />
         )} />
 
-        <Link to='/posts/new' className="post-new">post-form</Link>
+        <Link to='/posts/new' className="post-new">post-new</Link>
         <Link to='/' className="post-new">top</Link>
       </div>
     );

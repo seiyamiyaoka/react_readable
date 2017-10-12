@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Panel } from 'react-bootstrap';
+
 import { Route, Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { fetchPostComments,
@@ -40,16 +42,18 @@ class Comment extends Component {
     return(
       <div>
         {this.props.comment.filter(comment => comment.deleted === false).map((comment) => (
+
           <div>
-            <p>{comment.body}</p>
-            <p>{comment.author}</p>
-            <button onClick={(e) => this.handledeleteComment(e, comment.id)}>delete</button>
-            <Link
-              to={`/comment/${comment.id}`}
-              onClick={(e) => this.handleEditComment(e, comment.id) }
-            >
-            edit
-            </Link>
+            <Panel header={comment.author}>
+              <p>{comment.body}</p>
+              <button onClick={(e) => this.handledeleteComment(e, comment.id)}>delete</button>
+              <Link
+                to={`/comment/${comment.id}`}
+                onClick={(e) => this.handleEditComment(e, comment.id) }
+              >
+              edit
+              </Link>
+            </Panel>
           </div>
         ))}
       </div>

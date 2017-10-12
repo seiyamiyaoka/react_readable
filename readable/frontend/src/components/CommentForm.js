@@ -37,6 +37,8 @@ class CommentForm extends Component {
           owner: state.author
         })
     this.props.createComment(newComment)
+    this.state.body = ""
+    this.state.author = ""
   }
 
   handleSelectChange = e => {

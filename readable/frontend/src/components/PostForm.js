@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
+import { Form, FormGroup, Col } from 'react-bootstrap'
 import { uuid } from 'uuid'
 import serializeForm from 'form-serialize'
 import SelectCategory from './SelectCategory'
@@ -40,6 +41,7 @@ class PostForm extends Component {
     const { createPost } = this.props
     return (
       <div>
+
         <form onSubmit={this.props.postdispatch} className='create-contact-form'>
           <div className='create-contact-details'>
             <input

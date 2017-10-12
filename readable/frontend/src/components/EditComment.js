@@ -21,7 +21,8 @@ class EditComment extends Component {
   submitUpdateComment = (e, state) => {
     e.preventDefault()
     this.props.updateComment(state)
-
+    // this.props.backPage.push(this.props.backPage.location.pathname)
+    this.props.backPage.push('/')
   }
 
   handleChange = (e) => {
@@ -30,7 +31,6 @@ class EditComment extends Component {
     const name = target.name;
     this.setState({
       [name]: value
-
     });
   }
 
@@ -46,9 +46,10 @@ class EditComment extends Component {
 
   render() {
     const setComment = this.state
+
     return (
       <div>
-        <form onSubmit={(e) => this.submitUpdateComment(e, this.state)} className='create-contact-form'>
+        <form onSubmit={(e) => this.submitUpdateComment(e, this.state, this.props.backpage)} className='create-contact-form'>
           <div className='create-contact-details'>
             <input
              type='text'
@@ -84,3 +85,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(EditComment)
+// export default connect(mapStateToProps, null)(EditComment)

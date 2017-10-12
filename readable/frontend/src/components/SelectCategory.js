@@ -18,6 +18,7 @@ export default class SelectCategory extends Component {
 
   render() {
     return(
+      <div className="_select_search">
       <span>
         <select value={this.state.category} onChange={this.props.handleSelect}>
         　　<option value="moveTo" disabled>Move to...</option>
@@ -46,6 +47,7 @@ export default class SelectCategory extends Component {
           </option>
         </select>
       </span>
+      </div>
     )
   }
 }

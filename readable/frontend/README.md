@@ -1,10 +1,15 @@
 # Readable API Server
 
 ## how to
-  - まず初めにserverのnodejsを起動する
+  - first
     - cd api, npm start
-  - webpackを起動してreactを動かす
-    
+  - second
+    - cd frontend, yarn start
+## description
+  - Api and front have different places to write code.
+  - I will separate the action that uses api and the action that outputs api's data
+  - The design uses bootstrap. Loading CDN in public / index.html
+  - 
 
 ## Installation
 
