@@ -6,8 +6,7 @@ import { Route, Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { fetchPostComments,
          deleteComment,
-         editComment,
-         detailComment
+         editComment
         } from '../actions/comment'
 import EditComment from './EditComment'
 
@@ -27,21 +26,13 @@ class Comment extends Component {
   }
 
   setPostComment = (obj, nextProps) => {
-    obj.props.fetchPostComment(nextProps.id)
+    obj.props.fetchPostComments(nextProps.id)
     obj.setState({receiveComment: true})
   }
 
   componentWillReceiveProps(nextProps, preventProps) {
     this.state.receiveComment === false ? this.setPostComment(this, nextProps)
                                         : this.setState({receiveComment: false})
-    // if(this.state.receiveComment === false) {
-    //   this.props.fetchPostComment(nextProps.id)
-    //   this.setState({receiveComment: true})
-    //   return
-    // }
-    // this.setState({receiveComment: false})
-    // 無限ループしてしまうので明示的にreturnしてcommentを取得したら処理を終了
-    // Since it loops infinitely, returning explicitly and acquiring comment terminates processing
   }
 
   render() {
@@ -76,13 +67,4 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  // delete, update, editのアクションを用意してdispathに入れる
-  return {
-    fetchPostComment: (id) => dispatch(fetchPostComments(id)),
-    deleteComment: (commentId) => dispatch(deleteComment(commentId)),
-    editComment: (commentId) => dispatch(editComment(commentId))
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Comment))
+export default withRouter(connect(mapStateToProps, {fetchPostComments, deleteComment, editComment})(Comment))
