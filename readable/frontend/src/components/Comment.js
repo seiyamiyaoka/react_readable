@@ -26,13 +26,20 @@ class Comment extends Component {
     this.props.editComment(id)
   }
 
+  setPostComment = (obj, nextProps) => {
+    obj.props.fetchPostComment(nextProps.id)
+    obj.setState({receiveComment: true})
+  }
+
   componentWillReceiveProps(nextProps, preventProps) {
-    if(this.state.receiveComment === false) {
-      this.props.fetchPostComment(nextProps.id)
-      this.setState({receiveComment: true})
-      return
-    }
-    this.setState({receiveComment: false})
+    this.state.receiveComment === false ? this.setPostComment(this, nextProps)
+                                        : this.setState({receiveComment: false})
+    // if(this.state.receiveComment === false) {
+    //   this.props.fetchPostComment(nextProps.id)
+    //   this.setState({receiveComment: true})
+    //   return
+    // }
+    // this.setState({receiveComment: false})
     // 無限ループしてしまうので明示的にreturnしてcommentを取得したら処理を終了
     // Since it loops infinitely, returning explicitly and acquiring comment terminates processing
   }
