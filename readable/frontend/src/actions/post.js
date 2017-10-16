@@ -9,6 +9,7 @@ export const EDIT_POST = "EDIT_POST"
 export const UPDATE_POST = "UPDATE_POST"
 export const CATEGORY_POST = "CATEGORY_POST"
 export const VOTE_UP_SORT = "VOTE_UP_SORT"
+export const NOT_FOUND = "NOT_FOUND"
 
 const url = `${process.env.REACT_APP_BACKEND}`
 
@@ -59,7 +60,9 @@ export function createPost(post) {
       return fetch(`${url}/posts/${id}`, {headers: {'Authorization': 'test123'}})
       .then(res => res.json())
       .then(post => {
-        dispatch(oneReceivePost(post))
+        post.id === undefined ? dispatch(notFound())
+                              : dispatch(oneReceivePost(post))
+
       })
     }
   }
@@ -82,11 +85,8 @@ export function updatePost(post) {
 }
 
 export function voteSort(sortType, state) {
-  // debugger
   let sortedPost;
-
   sortedPost = state
-  // debugger
     return {
       type: VOTE_UP_SORT,
       sortedPost
@@ -118,5 +118,11 @@ function receiveCategoryPost(posts) {
   return {
     type: CATEGORY_POST,
     posts
+  }
+}
+
+function notFound() {
+  return {
+    type: NOT_FOUND
   }
 }

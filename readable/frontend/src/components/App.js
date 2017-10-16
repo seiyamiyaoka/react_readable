@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import { PageHeader } from 'react-bootstrap'
@@ -12,16 +13,9 @@ import Post from './Post'
 import PostForm from './PostForm'
 import EditPost from './EditPost'
 import EditComment from './EditComment'
+import Error from './error'
 import { fetchCategory } from '../actions/category'
-import { createPost,
-         deletePost,
-         fetchPosts,
-         fetchCategoryPosts,
-         detailPost,
-         updatePost,
-         voteSort,
-         updateVote
-        } from '../actions/post'
+import * as actions from '../actions/post'
 import '../App.css';
 
 
@@ -31,7 +25,7 @@ class App extends Component {
   }
   handlePost = (e) => {
     e.preventDefault()
-    this.props.dispatch(fetchPosts())
+    this.props.fetchPosts()
   }
 
   setBodyData = (e, value) => {
@@ -47,8 +41,6 @@ class App extends Component {
 
   submitPost = (e) => {
     e.preventDefault()
-    // debugger
-
     const values = serializeForm(e.target, {hash: true})
     const data = this.setBodyData(e, values)
     this.props.createPost(data)
@@ -64,7 +56,8 @@ class App extends Component {
 
   submitDeletePost = (e, id) => {
     e.preventDefault()
-    this.props.deletePost(id)
+    id === undefined ? this.props.deletePost(this.props.post.id)
+                     : this.props.deletePost(id)
   }
 
   handleDetail = (e, id) => {
@@ -74,7 +67,6 @@ class App extends Component {
   handleSelectCategory = (e) => {
     const categoryName = e.target.value
     e.preventDefault()
-    // debugger
     this.props.fetchCategoryPosts(categoryName)
   }
 
@@ -120,6 +112,9 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchCategory()
     this.props.fetchPosts()
+    const target = this.props.history.location.pathname.indexOf('/', 1)
+    target> 1 ? this.props.detailPost(this.props.history.location.pathname.slice(target + 1))
+              : null
   }
 
   componentWillReceiveProps(nextProps) {
@@ -128,12 +123,12 @@ class App extends Component {
 
 
   render() {
-
     const postsState  = this.props
-
     return (
       <div>
+
       <PageHeader>Readable <small>test app</small></PageHeader>
+      <Switch>
         <Route exact path='/posts/new' render={({history}) => (
           <PostForm
             postdispatch={(post) => {
@@ -162,10 +157,20 @@ class App extends Component {
           </div>
           )} />
 
-        <Route exact path='/detailpost/:id' render={() => (
-          <Post
-            post={this.props.post}
-          />
+        <Route exact path='/detailpost/:id' component={({history}) => (
+          postsState.post.post === false ? (
+            <Error />
+          ) : (
+            <Post
+              post={this.props.post}
+              handleDelete={(post) => {
+                this.submitDeletePost(post)
+                history.push('/')
+              }}
+              handleDetail={this.handleDetail}
+            />
+          )
+
         )} />
 
         <Route exact path='/edit/post/:id' render={({ history }) => (
@@ -184,6 +189,7 @@ class App extends Component {
            />
         )} />
 
+        </Switch>
         <Link to='/posts/new' className="post-new">post-new</Link>
         <Link to='/' className="post-new">top</Link>
       </div>
@@ -191,28 +197,13 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    categories: state.fetchCategory,
-    posts: state.fetchPosts,
-    post: state.detailPost
-  }
+function mapStateToProps({categories, posts, post}) {
+  return { categories, posts, post }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    fetchCategory: () => dispatch(fetchCategory()),
-    fetchPosts: () => dispatch(fetchPosts()),
-    fetchCategoryPosts: (category) => dispatch(fetchCategoryPosts(category)),
-    createPost: (post) => dispatch(createPost(post)),
-    deletePost: (id) => dispatch(deletePost(id)),
-    detailPost: (id) => dispatch(detailPost(id)),
-    updatePost: (post) => dispatch(updatePost(post)),
-    voteSort: (type, status) => dispatch(voteSort(type, status)),
-    updateVote: (id, voteResult) => dispatch(updateVote(id, voteResult))
-
-    // fetchCategoryPosts: (category) => dispatch(fetchCategoryPosts(category))
-  }
-}
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {...actions, fetchCategory}, dispatch
+  )
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

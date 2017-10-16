@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { Route } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import { Grid, Col, Row, Button, Thumbnail } from 'react-bootstrap';
 import Comment from './Comment'
 import CommentForm from './CommentForm'
-import { fetchPostComment } from '../actions/comment'
 class Post extends Component {
-
   render() {
     const {author, body, category, timestamp, title, voteScore, id} = this.props.post
     return(
@@ -20,6 +18,15 @@ class Post extends Component {
               <p>{category}</p>
               <p>{timestamp}</p>
               <p>{voteScore}</p>
+              <Button bsStyle="danger" onClick={(e) => this.props.handleDelete(e, id)}>delete</Button>
+
+              <Link
+                className="createPost"
+                to={`/edit/post/${id}`}
+                onClick={(e) => this.props.handleDetail(e, id) }
+              >
+              edit
+              </Link>
               <Comment id={id}/>
               <Route exact path='/detailpost/:id' render={() => (
                 <CommentForm />
@@ -32,10 +39,9 @@ class Post extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({post}) {
   return {
-    comment: state.fetchPostComment,
-    post: state.detailPost
+    post
   }
 }
 export default connect(mapStateToProps)(Post)

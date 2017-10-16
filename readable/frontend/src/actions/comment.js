@@ -70,10 +70,10 @@ export function detailComment(comment) {
   }
 }
 
-function receivePosts(comment) {
+function receivePosts(comments) {
     return {
     type: COMMENT_INDEX,
-    comment
+    comments
   }
 }
 

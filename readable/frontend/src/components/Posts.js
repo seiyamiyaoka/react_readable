@@ -4,11 +4,6 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Grid, Col, Row, Button, Thumbnail } from 'react-bootstrap';
 
-
-
-
-
-
 export default class Posts extends Component {
   render() {
     let setPost;

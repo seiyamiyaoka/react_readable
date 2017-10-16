@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux'
-import { fetchCategory, receiveCategory} from './category';
-import { fetchComment, createComment, detailComment } from './comment';
-import { fetchPosts, deletePost, detailPost, createPost, fetchCategoryPosts} from './post';
+import { categories } from './category';
+import { comments, createComment, detailComment } from './comment';
+import { posts, deletePost, post, createPost, fetchCategoryPosts} from './post';
 
 export default combineReducers({
-  fetchCategory,
-  fetchPosts,
+  categories,
+  posts,
   createPost,
   deletePost,
   fetchCategoryPosts,
-  detailPost,
-  fetchComment,
+  post,
+  comments,
   createComment,
   detailComment
 });

@@ -12,10 +12,10 @@ const initComment = {
   timestamp: null
 }
 
-export function fetchComment(state=[], action) {
+export function comments(state=[], action) {
   switch (action.type) {
     case COMMENT_INDEX:
-      return action.comment
+      return action.comments
     default:
       return state
   }

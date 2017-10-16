@@ -1,6 +1,6 @@
 import { ALL_CATEGORY } from '../actions/category'
 
-export function fetchCategory(state=[], action) {
+export function categories(state=[], action) {
 
   switch (action.type) {
     case ALL_CATEGORY:

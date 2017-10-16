@@ -7,7 +7,8 @@ import {
   UPDATE_POST,
   DETAIL_POST,
   CATEGORY_POST,
-  VOTE_UP_SORT
+  VOTE_UP_SORT,
+  NOT_FOUND
 } from '../actions/post'
 
 const initialPostState = {
@@ -19,7 +20,7 @@ const initialPostState = {
     category: ""
   }
 }
-export function fetchPosts(state=[], action) {
+export function posts(state=[], action) {
   switch (action.type) {
     case ALL_POST:
       return action.posts
@@ -33,10 +34,14 @@ export function fetchPosts(state=[], action) {
   }
 }
 
-export function detailPost(state=[], action) {
+export function post(state=[], action) {
   switch (action.type) {
     case DETAIL_POST:
       return action.post
+    case NOT_FOUND:
+      return Object.assign({}, {
+        post: false
+      })
     default:
       return state
   }

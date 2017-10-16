@@ -33,9 +33,10 @@ class CommentForm extends Component {
     const id = uuidv1()
     const newComment = Object.assign({}, state, {
           id: id,
-          parentId: state.parentId,
+          parentId: this.props.state.post.id,
           owner: state.author
         })
+        // debugger
     this.props.createComment(newComment)
     this.state.body = ""
     this.state.author = ""
@@ -47,7 +48,7 @@ class CommentForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-        parentId: nextProps.state.detailPost.id,
+        parentId: nextProps.state.post.id,
         timestamp: new Date()
       }
     )

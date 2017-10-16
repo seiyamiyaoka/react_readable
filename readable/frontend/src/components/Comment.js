@@ -29,17 +29,26 @@ class Comment extends Component {
     obj.props.fetchPostComments(nextProps.id)
     obj.setState({receiveComment: true})
   }
+  // setPostComment = (obj, nextProps) => {
+  //   obj.props.fetchPostComments(nextProps.id)
+  //   obj.setState({receiveComment: true})
+  // }
 
   componentWillReceiveProps(nextProps, preventProps) {
     this.state.receiveComment === false ? this.setPostComment(this, nextProps)
                                         : this.setState({receiveComment: false})
   }
 
+  componentDidMount() {
+    this.props.fetchPostComments(this.props.match.params.id)
+    this.setState({receiveComment: true})
+  }
+
   render() {
-    const comments = this.props.comment
+    const comments = this.props.comments
     return(
       <div>
-        {this.props.comment.filter(comment => comment.deleted === false).map((comment) => (
+        {this.props.comments.filter(comment => comment.deleted === false).map((comment) => (
 
           <div>
             <Panel header={comment.author}>
@@ -59,12 +68,17 @@ class Comment extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({comments, detailComment}) {
   return {
-    depost: state.detailPost,
-    comment: state.fetchComment,
-    detailComment: state.detailComment
+    comments, detailComment
   }
 }
+// function mapStateToProps(state) {
+//   return {
+//     depost: state.detailPost,
+//     comment: state.fetchComment,
+//     detailComment: state.detailComment
+//   }
+// }
 
 export default withRouter(connect(mapStateToProps, {fetchPostComments, deleteComment, editComment})(Comment))
